@@ -1,0 +1,90 @@
+<ul class="nav nav-tabs" style="cursor: pointer">
+    <li ng-class="{active: activeTab == 'inbox'}"><a ng-click="activeTab='inbox'">Inbox</a></li>
+    <li ng-class="{active: activeTab == 'sent'}"><a ng-click="activeTab='sent'">Sent</a></li>
+</ul><br />
+<table class="table table-bordered table-condensed" ng-show="activeTab=='inbox'">
+    <tbody>
+        <tr ng-repeat="email in emails" ng-click="showPopup(email)" style="cursor:pointer">
+            <td>{{ email.from }}</td>
+            <td>{{ email.to }}</td>
+            <td>{{ email.subject }}</td>
+            <td>{{ email.body | limitTo: 21: 0 }}...</td>
+            <td>{{ email.date | date:'MMM d' }}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-condensed" ng-show="activeTab=='sent'">
+    <tbody>
+        <tr ng-repeat="email in sentEmails" ng-click="showPopup(email)" style="cursor:pointer">
+            <td>{{ email.from }}</td>
+            <td>{{ email.to }}</td>
+            <td>{{ email.subject }}</td>
+            <td>{{ email.body | limitTo: 21: 0 }}...</td>
+            <td>{{ email.date | date:'MMM d' }}</td>
+        </tr>
+    </tbody>
+</table>
+<!-- Email Modal -->
+<div id="emailModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">{{selectedEmail.subject}}</h3>
+            </div>
+            <div class="modal-body">
+                <strong>From:</strong> {{selectedEmail.from}} <br />
+                <strong>To:</strong> {{selectedEmail.to}} <br />
+                <strong>Date:</strong> {{selectedEmail.date | date:'MMM d' }} <br />
+                <br />
+                <p>
+                <span style="white-space:pre">{{selectedEmail.body}}</span>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-show="activeTab=='inbox'" ng-click="forward()">Forward</button>
+                <button type="button" class="btn btn-primary" ng-show="activeTab=='inbox'" ng-click="reply()">Reply</button>
+                <a href="#" class="btn btn-primary" ng-show="activeTab=='inbox' && email == {}">Send</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Compose Modal -->
+<div id="composeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Compose Email</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="input-group">
+                        <span class="input-group-addon">From</span>
+                        <input type="text" class="form-control" ng-model="composeEmail.from">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">To</span>
+                        <input type="text" class="form-control" ng-model="composeEmail.to">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">Subject</span>
+                        <input type="text" class="form-control" ng-model="composeEmail.subject">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">Message</span>
+                        <textarea style="width:100%" ng-model="composeEmail.body"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary" ng-click="sendEmail()" data-dismiss="modal">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="btn btn-primary" ng-click="showComposePopup()">Compose</button><br /><br />
