@@ -1,0 +1,67 @@
+<table class="table table-bordered table-condensed">
+    <tbody>
+        <tr ng-repeat="email in emails" ng-click="showPopup(email)" style="cursor:pointer">
+            <td>{{ email.from }}</td>
+            <td>{{ email.subject }}</td>
+            <td>{{ email.body | limitTo: 21: 0 }}...</td>
+            <td>{{ email.date }}</td>
+        </tr>
+    </tbody>
+</table>
+<!-- Email Modal -->
+<div id="emailModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">{{selectedEmail.subject}}</h3>
+            </div>
+            <div class="modal-body">
+                <strong>From:</strong> {{selectedEmail.from}} <br />
+                <strong>Date:</strong> {{selectedEmail.date}} <br />
+                <br />
+                <p>
+                {{selectedEmail.body}}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Compose Modal -->
+<div id="composeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Compose Email</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="input-group">
+                        <span class="input-group-addon">To</span>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">Subject</span>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">Message</span>
+                        <textarea style="width:100%"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="btn btn-primary" ng-click="showComposePopup()">Compose</button>
